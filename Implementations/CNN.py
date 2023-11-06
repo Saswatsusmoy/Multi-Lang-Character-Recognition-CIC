@@ -1,49 +1,83 @@
 import numpy as np
 
-# CNN model
 class CNN:
-  def __init__(self, input_shape, num_filters, filter_size, pool_size, num_classes):
-    # CNN architecture details
-    
-    # Initialize weights
-    self.W1 = np.random.rand(num_filters, input_shape[0], filter_size, filter_size)
-    self.b1 = np.zeros(num_filters)
-    
-    self.W2 = np.random.rand(num_filters * (input_shape[1]//pool_size) * (input_shape[2]//pool_size), num_classes)   # noqa: E501
-    self.b2 = np.zeros(num_classes)
+
+  def __init__(self, input_shape, num_filters):
+    self.input_shape = input_shape
+    self.num_filters = num_filters
+
+    self.weights = self._initialize_weights()
+
+  def _initialize_weights(self):
+
+    weights = {}
+
+    #layer 1
+    weights['W1'] = np.random.randn(self.num_filters, self.input_shape[0], 3, 3) * 0.01
+    weights['b1'] = np.zeros(self.num_filters)
+
+    #layer 2
+    weights['W2'] = np.random.randn(self.num_filters*2, self.num_filters, 3, 3) * 0.01 
+    weights['b2'] = np.zeros(self.num_filters*2)
+
+    #layer 3
+    weights['W3'] = np.random.randn(self.num_filters*2, self.num_filters*2, 3, 3) * 0.01
+    weights['b3'] = np.zeros(self.num_filters*2)
+
+    #FC layer 
+    weights['Wf'] = np.random.randn(self.num_filters * 2 * (self.input_shape[1]//8) * (self.input_shape[2]//8), 32) * 0.01
+    weights['bf'] = np.zeros(32)
+
+    return weights
 
   def extract_features(self, X):
-    # Implement CNN layers
-    conv_out = self.conv_layer(X)
-    pooled_out = self.maxpool_layer(conv_out)
-    flattened = self.flatten(pooled_out)
-    return flattened
-  
+
+    # Implement layers
+    conv1 = self.conv_layer(X, self.weights['W1'], self.weights['b1']) 
+    act1 = self.relu(conv1)
+
+    conv2 = self.conv_layer(act1, self.weights['W2'], self.weights['b2'])
+    act2 = self.relu(conv2)
+
+    conv3 = self.conv_layer(act2, self.weights['W3'], self.weights['b3'])
+    act3 = self.relu(conv3)
+
+    pooled = self.maxpool_layer(act3)
+    flattened = self.flatten(pooled)
+
+    fc = flattened @ self.weights['Wf'] + self.weights['bf']
+    features = self.relu(fc)
+    return features
+
   # Helper functions
-  def conv_layer(self, X):
+  def conv_layer(self, X, W, b):
     # Convolution operation
     conv_out = []
-    for f in range(self.num_filters):
-      conv = np.zeros((X.shape[1]-self.filter_size+1, X.shape[2]-self.filter_size+1))
-      for i in range(conv.shape[0]):
-        for j in range(conv.shape[1]):
-          conv[i,j] = np.sum(X[:,i:i+self.filter_size,j:j+self.filter_size] * self.W1[f]) + self.b1[f]  # noqa: E501
+    for f in range(W.shape[0]):
+      conv = self.conv(X, W[f], b[f])
       conv_out.append(conv)
     return np.array(conv_out)
 
+  def conv(self, X, W, b):
+    # Convolution helper 
+    conv = np.zeros((X.shape[1]-W.shape[1]+1, X.shape[2]-W.shape[2]+1))
+    for i in range(conv.shape[0]):
+      for j in range(conv.shape[1]):
+        conv[i,j] = np.sum(X[:,i:i+W.shape[1],j:j+W.shape[2]] * W) + b
+    return conv
+
+  def relu(self, X):
+    return np.maximum(0, X)
+
   def maxpool_layer(self, X):
-    # Max pooling operation
     return np.array([self.maxpool(x) for x in X])
 
   def maxpool(self, X):
-    # Max pooling helper
-    pooled = np.zeros((X.shape[0]//self.pool_size, X.shape[1]//self.pool_size))
+    pooled = np.zeros((X.shape[0]//2, X.shape[1]//2))
     for i in range(pooled.shape[0]):
       for j in range(pooled.shape[1]):
-        pooled[i,j] = np.max(X[i*self.pool_size:(i+1)*self.pool_size, 
-                              j*self.pool_size:(j+1)*self.pool_size])
+        pooled[i,j] = np.max(X[i*2:(i+1)*2, j*2:(j+1)*2])
     return pooled
 
   def flatten(self, X):
-    # Flatten output for fully connected layer
     return np.array([x.flatten() for x in X])
