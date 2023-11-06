@@ -11,7 +11,12 @@ This GitHub repository contains machine learning models for character recognitio
 
 2. ESN Model: The Echo State Network model is another approach for character recognition. Similar to the CNN model, it is implemented as a class for convenient usage.
 
-3. CNN-ESN Combo Model: We have also developed a combined model that leverages the strengths of both CNN and ESN. This hybrid model aims to achieve improved accuracy and performance in character classification tasks.
+3. EUSN Model: The Euler State Network (ESN) model is a powerful approach for character recognition, implemented as a class for seamless integration and ease of use. Harness the potential of ESNs to unlock accurate and efficient character classification.
+
+4. CNN-ESN Combo Model: We have also developed a combined model that leverages the strengths of both CNN and ESN. This hybrid model aims to achieve improved accuracy and performance in character classification tasks.
+
+5. CNN-EUSN Model: The CNN-Euler State Network (ESN) model combines the strengths of Convolutional Neural Networks (CNN) and ESNs for robust and accurate character recognition. This hybrid model, implemented as a class, offers a seamless integration of both CNN and ESN techniques, enabling you to leverage the power of deep learning and dynamic temporal modeling. Experience the best of both worlds with the CNN-ESN model for advanced character classification tasks.
+
 
 ## Implementations
 
