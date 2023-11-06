@@ -26,7 +26,3 @@ To use any of the models included in this repository, simply import the correspo
 ## Contributions
 
 We welcome contributions from the community to enhance the existing models or add support for additional languages. If you have any suggestions, bug reports, or feature requests, please feel free to open an issue or submit a pull request. Together, we can improve the accuracy and versatility of character recognition models.
-
-## License
-
-This repository is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute the code for both commercial and non-commercial purposes. However, we kindly request that you provide attribution to the original authors by linking back to this repository.
