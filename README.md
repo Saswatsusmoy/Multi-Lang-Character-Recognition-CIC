@@ -9,7 +9,7 @@ This GitHub repository contains machine learning models for character recognitio
 
 1. CNN Model: This model utilizes Convolutional Neural Networks to perform character recognition. It is implemented as a class, allowing users to easily integrate it into their own projects.
 
-2.ResNet50 Model: Using the ResNet50 architecture, this class-based model excels in character recognition, utilizing deep skip connections for feature extraction and providing versatility with pre-trained weights on ImageNet.
+2. ResNet50 Model: Using the ResNet50 architecture, this class-based model excels in character recognition, utilizing deep skip connections for feature extraction and providing versatility with pre-trained weights on ImageNet.
 
 3. ESN Model: The Echo State Network model is another approach for character recognition. Similar to the CNN model, it is implemented as a class for convenient usage.
 
